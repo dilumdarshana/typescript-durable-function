@@ -1,5 +1,5 @@
-import { SamplePlaceholder } from "@/components/sample-placeholder";
+import { UserSignupDemo } from '@/components/user-signup-demo';
 
 export default function SampleOnePage() {
-  return <SamplePlaceholder title="Sample 1" />;
+  return <UserSignupDemo />;
 }

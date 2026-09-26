@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { samples } from "@/lib/samples";
+import Link from 'next/link';
+import { samples } from '@/lib/samples';
 
 export default function Home() {
   return (

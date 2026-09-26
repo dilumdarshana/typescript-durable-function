@@ -28,6 +28,8 @@ A comprehensive set of demos showcasing Vercel's Workflow SDK. Each demo lives i
 - Keep demos focused: one concept per route, with a short explanation rendered on the page
 - Use Server Components by default; add `"use client"` only where interactivity is required
 - Never add comments unless they explain a non-obvious Workflow SDK concept
+- Use single quotes for JavaScript/TypeScript strings; use double quotes for JSX/HTML attributes
+- Keep the `"use workflow"` and `"use step"` directives double-quoted (like `"use strict"`)
 
 <!-- BEGIN:nextjs-agent-rules -->
 
