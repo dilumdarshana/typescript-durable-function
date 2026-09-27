@@ -1,5 +1,5 @@
-import { DemoPlaceholder } from '@/components/demo-placeholder';
+import { RetriesDemo } from '@/components/retries-demo';
 
 export default function RetriesPage() {
-  return <DemoPlaceholder title="Retries" />;
+  return <RetriesDemo />;
 }
