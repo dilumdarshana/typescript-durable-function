@@ -2,11 +2,11 @@ import { getRun } from 'workflow/api';
 import { ndjsonResponse } from '@/lib/ndjson';
 
 /**
- * Streams the demo's progress events as they happen.
+ * Streams progress events as the fan-out proceeds.
  *
- * Multiple steps write to this stream concurrently, which the SDK supports:
- * stream locks are scoped to a step, not to the run. Chunks from different
- * steps interleave in arrival order, so the log shows the fan-out clearly.
+ * Every step in this demo writes to the same stream, so the log makes the
+ * interleaving visible: sequential items finish in a strict order, while
+ * parallel items finish in whatever order they happen to complete.
  */
 export async function GET(
   _request: Request,

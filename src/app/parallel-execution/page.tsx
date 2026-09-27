@@ -1,5 +1,5 @@
-import { DemoPlaceholder } from '@/components/demo-placeholder';
+import { ParallelDemo } from '@/components/parallel-demo';
 
 export default function ParallelExecutionPage() {
-  return <DemoPlaceholder title="Parallel Execution" />;
+  return <ParallelDemo />;
 }
