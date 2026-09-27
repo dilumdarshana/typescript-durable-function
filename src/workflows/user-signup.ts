@@ -14,9 +14,11 @@ export type User = {
  * persisted to an event log, so it can suspend and resume exactly where it
  * left off — even across crashes, restarts, or new deployments.
  *
- * Workflow functions are deterministic and run in a sandboxed environment
- * without full Node.js access. All real work (DB calls, APIs, etc.) must
- * happen inside step functions (`"use step"`).
+ * Workflow functions are deterministic and run in a sandboxed Node.js VM
+ * with no full Node.js access — no `fs`, global `fetch`, timers, or
+ * `Buffer`. All real work (DB calls, APIs, etc.) must happen inside step
+ * functions (`"use step"`). `console`, `Math.random()`, and `Date.now()`
+ * are allowed; the SDK fixes the latter two across replays.
  */
 export async function handleUserSignup(email: string) {
   "use workflow";
@@ -39,8 +41,12 @@ export async function handleUserSignup(email: string) {
 
 /**
  * A step function. The `"use step"` directive gives it full Node.js runtime
- * access and automatic retries: if it throws, the runtime retries it
- * (3 times by default) before propagating the failure to the workflow.
+ * access and automatic retries: if it throws a plain Error, the runtime
+ * retries it (maxRetries defaults to 3, so up to 4 total attempts) before
+ * propagating the failure to the workflow.
+ *
+ * Outside a workflow this directive is a no-op and the function just runs
+ * like any other — which is what makes step functions unit-testable.
  */
 async function createUser(email: string): Promise<User> {
   "use step";
