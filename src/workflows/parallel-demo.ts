@@ -74,7 +74,7 @@ const RACE_TIMEOUT = '2s';
  * `Promise.race` that imposes a timeout without cancelling the loser.
  */
 export async function handleParallelDemo() {
-  'use workflow';
+  "use workflow";
 
   const items = WORKLOAD.map((entry) => entry.item);
 
@@ -138,7 +138,7 @@ async function processItem(
   item: string,
   phase: ParallelPhase
 ): Promise<ItemResult> {
-  'use step';
+  "use step";
 
   const durationMs = WORKLOAD.find((entry) => entry.item === item)!.durationMs;
   const startedAt = Date.now();
@@ -164,7 +164,7 @@ async function processItem(
  * always wins.
  */
 async function slowItem(): Promise<ItemResult> {
-  'use step';
+  "use step";
 
   const startedAt = Date.now();
 

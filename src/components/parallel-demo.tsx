@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from 'react';
 import type { ParallelEvent, ParallelReport } from '@/workflows/parallel-demo';

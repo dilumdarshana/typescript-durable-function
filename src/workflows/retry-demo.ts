@@ -42,7 +42,7 @@ const BACKOFF_RETRY_AFTER = '1s';
  * report a side-by-side summary.
  */
 export async function handleRetryDemo(failuresBeforeSuccess: number) {
-  'use workflow';
+  "use workflow";
 
   const reports: ScenarioReport[] = [];
 
@@ -123,7 +123,7 @@ export async function handleRetryDemo(failuresBeforeSuccess: number) {
  * succeeds. Plain errors are the default retried case.
  */
 async function recoverAfterTransientError(failuresBeforeSuccess: number) {
-  'use step';
+  "use step";
 
   const { attempt, stepId } = getStepMetadata();
   const shouldFail = attempt <= failuresBeforeSuccess;
@@ -153,7 +153,7 @@ recoverAfterTransientError.maxRetries = TRANSIENT_MAX_RETRIES;
  * retries after BACKOFF_MAX_RETRIES + 1 attempts.
  */
 async function rateLimitedWithBackoff() {
-  'use step';
+  "use step";
 
   const { attempt, stepId } = getStepMetadata();
 
@@ -177,7 +177,7 @@ rateLimitedWithBackoff.maxRetries = BACKOFF_MAX_RETRIES;
  * not retry — `attempt` never advances past 1.
  */
 async function rejectInvalidPayload() {
-  'use step';
+  "use step";
 
   const { attempt, stepId } = getStepMetadata();
 
