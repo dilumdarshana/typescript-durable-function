@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Workflow SDK Demos
+
+A reference project showcasing [Vercel's Workflow SDK](https://workflow-sdk.dev) in TypeScript and Next.js. Each route under `src/app/` demonstrates one durable-execution concept end to end.
+
+**Live demo:** https://typescript-durable-function.vercel.app/
+
+## Demos
+
+| Demo | Route | Shows |
+| --- | --- | --- |
+| Basics | `/basics` | Workflows, steps, `sleep()`, automatic retries, `FatalError`, run status polling |
+| Retries | `/retries` | `maxRetries`, `RetryableError` backoff, idempotency |
+| Parallel Execution | `/parallel-execution` | Composing steps with `Promise.all` / `allSettled` / `race` |
+| Human-in-the-Loop | `/human-in-the-loop` | `createHook`, `createWebhook`, and resuming on external data |
+
+## Concepts
+
+See [CONCEPTS.md](./CONCEPTS.md) for the SDK's execution model, event sourcing, suspension primitives, deployment model, and a detailed reference on the `"use workflow"` and `"use step"` directives.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm build   # production build (includes type checking)
+pnpm start   # serve the production build
+pnpm lint    # ESLint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+> **Note:** `pnpm lint` currently fails with `typescript-eslint does not support TS 7.0` — a known toolchain incompatibility, unrelated to application code. `pnpm build` type-checks cleanly.
 
-## Learn More
+## How a demo is wired
 
-To learn more about Next.js, take a look at the following resources:
+Each demo follows the same three-part shape:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Workflow** — `src/workflows/*.ts` holds the `"use workflow"` orchestrator and its `"use step"` functions.
+2. **API routes** — `src/app/api/**` start the workflow with `start()` and read run state with `getRun()`.
+3. **UI** — a client component under `src/components/` that triggers the workflow and polls for progress.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`withWorkflow()` in `next.config.ts` installs the SWC plugin that compiles the directives. Without it, both directives are inert no-ops.
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── app/
+│   ├── api/                 # start + status routes
+│   ├── basics/              # demo pages (one concept per route)
+│   ├── retries/
+│   ├── parallel-execution/
+│   └── human-in-the-loop/
+├── components/              # client components and placeholders
+├── lib/demos.ts             # demo registry driving the sidebar
+└── workflows/               # "use workflow" and "use step" functions
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploying
+
+Deploy to Vercel and the SDK registers the required `/.well-known/workflow/*` routes automatically via `withWorkflow()`.
