@@ -1,6 +1,9 @@
 import Link from 'next/link';
-import { samples } from '@/lib/samples';
+import { demos } from '@/lib/demos';
 
+/**
+ * Landing page listing all available demos.
+ */
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-8 p-8">
@@ -13,13 +16,13 @@ export default function Home() {
         </p>
       </div>
       <nav className="flex flex-col gap-2">
-        {samples.map((sample) => (
+        {demos.map((demo) => (
           <Link
-            key={sample.id}
-            href={sample.href}
+            key={demo.id}
+            href={demo.href}
             className="rounded-lg border border-zinc-200 px-6 py-3 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-100 dark:hover:text-zinc-50"
           >
-            {sample.label}
+            {demo.label}
           </Link>
         ))}
       </nav>

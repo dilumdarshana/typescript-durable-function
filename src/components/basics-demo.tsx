@@ -2,18 +2,27 @@
 
 import { useState } from 'react';
 
+// Shape of the run status returned by GET /api/signup/[runId].
 type RunStatus = {
   runId: string;
   status: string;
   output: { userId: string; status: string } | null;
 };
 
-export function UserSignupDemo() {
+/**
+ * Interactive demo for the basics workflow.
+ *
+ * The form POSTs to /api/signup to start the workflow, then polls
+ * GET /api/signup/[runId] every second to show live progress until the
+ * run completes.
+ */
+export function BasicsDemo() {
   const [email, setEmail] = useState('');
   const [run, setRun] = useState<RunStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Start the workflow via the API route, then begin polling its status.
   async function startWorkflow() {
     setLoading(true);
     setError(null);
@@ -31,6 +40,7 @@ export function UserSignupDemo() {
       }
 
       const data = await res.json();
+      // Optimistically show the run as pending before the first poll returns.
       setRun({ runId: data.runId, status: 'pending', output: null });
       pollStatus(data.runId);
     } catch (err) {
@@ -40,6 +50,8 @@ export function UserSignupDemo() {
     }
   }
 
+  // Poll the run status until it leaves pending/running (i.e. completes,
+  // fails, or is cancelled).
   async function pollStatus(runId: string) {
     const res = await fetch(`/api/signup/${runId}`);
     const data = await res.json();
@@ -51,9 +63,9 @@ export function UserSignupDemo() {
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-6 p-8">
+    <div className="flex flex-1 flex-col items-center gap-6 p-8 pt-12">
       <div className="w-full max-w-md text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">User Signup</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Basics</h1>
         <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
           A durable workflow that creates a user, sends a welcome email, sleeps
           for 5 seconds, then sends an onboarding email.
