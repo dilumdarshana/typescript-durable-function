@@ -1,5 +1,5 @@
-import { DemoPlaceholder } from '@/components/demo-placeholder';
+import { HumanInTheLoopDemo } from '@/components/human-in-the-loop-demo';
 
 export default function HumanInTheLoopPage() {
-  return <DemoPlaceholder title="Human-in-the-Loop" />;
+  return <HumanInTheLoopDemo />;
 }

@@ -10,8 +10,8 @@ A reference project showcasing [Vercel's Workflow SDK](https://workflow-sdk.dev)
 | --- | --- | --- |
 | Basics | `/basics` | Workflows, steps, `sleep()`, automatic retries, `FatalError`, run status polling |
 | Retries | `/retries` | `maxRetries`, `RetryableError` backoff, idempotency |
-| Parallel Execution | `/parallel-execution` | Composing steps with `Promise.all` / `allSettled` / `race` |
-| Human-in-the-Loop | `/human-in-the-loop` | `createHook`, `createWebhook`, and resuming on external data |
+| Parallel Execution | `/parallel-execution` | Composing steps with `Promise.all` / `Promise.race`, and the non-cancelled loser |
+| Human-in-the-Loop | `/human-in-the-loop` | A typed `defineHook`, resuming from a private route, and an approval timeout |
 
 ## Concepts
 
@@ -40,7 +40,7 @@ Each demo follows the same three-part shape:
 
 1. **Workflow** — `src/workflows/*.ts` holds the `"use workflow"` orchestrator and its `"use step"` functions.
 2. **API routes** — `src/app/api/**` start the workflow with `start()` and read run state with `getRun()`.
-3. **UI** — a client component under `src/components/` that triggers the workflow and polls for progress.
+3. **UI** — a client component under `src/components/` that triggers the workflow, tails the run's stream for live events, and polls for the final result.
 
 `withWorkflow()` in `next.config.ts` installs the SWC plugin that compiles the directives. Without it, both directives are inert no-ops.
 
@@ -54,7 +54,7 @@ src/
 │   ├── retries/
 │   ├── parallel-execution/
 │   └── human-in-the-loop/
-├── components/              # client components and placeholders
+├── components/              # client components, one per demo
 ├── lib/demos.ts             # demo registry driving the sidebar
 └── workflows/               # "use workflow" and "use step" functions
 ```
